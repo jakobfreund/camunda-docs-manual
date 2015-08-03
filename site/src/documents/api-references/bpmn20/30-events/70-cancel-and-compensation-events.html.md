@@ -60,6 +60,8 @@ Note: If compensation is thrown within a scope which contains a subprocess and t
 
 In this process we have two concurrent executions, one executing the embedded subprocess and one executing the "charge credit card" activity. Lets assume both executions are started and the first concurrent execution is waiting for a user to complete the "review bookings" task. The second execution performs the "charge credit card" activity and an error is thrown, which causes the "cancel reservations" event to trigger compensation. At this point the parallel subprocess is not yet completed which means that the compensation event is not propagated to the subprocess and thus the "cancel hotel reservation" compensation handler is not executed. If the user task (and thus the embedded subprocess) completes before the "cancel reservations" is performed, compensation is propagated to the embedded subprocess.
 
+Note: When compensation is thrown for a multi instance activity, the associated compensation handler is only executed when all instances of this activity have ended. That means, the multi instance activity must be ended before it can be compensated.
+
 Process variables: When compensating an embedded subprocess, the execution used for executing the compensation handlers has access to the local process variables of the subprocess in the state they were in when the subprocess completed execution. To achieve this, a snapshot of the process variables associated with the scope execution (execution created for executing the subprocess) is taken. From this, a couple of implications follow:
 
 *   The compensation handler does not have access to variables added to concurrent executions created inside the subprocess scope.
