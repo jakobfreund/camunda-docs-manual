@@ -53,6 +53,7 @@ Its properties are as follows:
   </tr>
   <tr>
     <td>jobDefinitionId</td>
+    <td>String</td>
     <td>The id of the associated job definition.</td>
   </tr>
   <tr>
